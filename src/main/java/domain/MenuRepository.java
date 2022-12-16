@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static constant.SystemConstant.ERROR_PREFIX;
+
 public class MenuRepository {
     private static final List<Menu> menus = new ArrayList<>();
 
@@ -20,5 +22,12 @@ public class MenuRepository {
 
     public static List<Menu> menus() {
         return Collections.unmodifiableList(menus);
+    }
+
+    public static Menu findByNumber(int number) {
+        return menus.stream()
+                .filter(menu -> menu.isSameNumber(number))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(ERROR_PREFIX + "존재하지 않는 메뉴 번호입니다."));
     }
 }
