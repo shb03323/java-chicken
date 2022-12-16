@@ -20,4 +20,14 @@ public class OrderRepository {
     public static void order(Table table, Menu menu, int count) {
         orders.get(table).orderMenu(menu, count);
     }
+
+    public static int getResult(Table table, PaymentOption paymentOption) {
+        Order order = orders.get(table);
+        int totalAmount = order.getTotalAmount();
+        if (paymentOption.equals(PaymentOption.CASH)) {
+            totalAmount *= 0.95;
+        }
+        totalAmount -= order.getDiscount();
+        return totalAmount;
+    }
 }

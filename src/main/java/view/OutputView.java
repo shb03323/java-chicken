@@ -36,6 +36,18 @@ public class OutputView {
         }
     }
 
+    public static void printOrders(List<String> orders) {
+        System.out.println("## 주문 내역");
+        System.out.println("메뉴 수량 금액");
+        orders.forEach(System.out::println);
+        System.out.println();
+    }
+
+    public static void printTotalAmount(int totalAmount) {
+        System.out.println("## 최종 결제할 금액\n"
+                + totalAmount + "원");
+    }
+
     private static void printLine(final String line, final int count) {
         for (int index = 0; index < count; index++) {
             System.out.print(line);

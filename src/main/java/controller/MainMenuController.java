@@ -29,7 +29,7 @@ public class MainMenuController {
 
     private MainOption selectOption() {
         try {
-            int command = InputView.selectOption();
+            final int command = InputView.selectOption();
             return MainOption.from(command);
         } catch (IllegalArgumentException exception) {
             OutputView.printErrorMessage(exception.getMessage());
@@ -48,39 +48,58 @@ public class MainMenuController {
     }
 
     private void initControllers() {
-        runOptions.put(MainOption.ORDER, MainMenuController::order);
-        runOptions.put(MainOption.PAYMENT, MainMenuController::pay);
-        runOptions.put(MainOption.QUIT, MainMenuController::quit);
+        runOptions.put(MainOption.ORDER, this::order);
+        runOptions.put(MainOption.PAYMENT, this::pay);
+        runOptions.put(MainOption.QUIT, this::quit);
     }
 
-    private static void order() {
-        int tableNumber = selectTable();
-        Table table = TableRepository.findByNumber(tableNumber);
-        int menuNumber = selectMenu();
-        Menu menu = MenuRepository.findByNumber(menuNumber);
-        int menuCount = inputMenuCount();
+    private void order() {
+        final Table table = selectTable();
+        final Menu menu = selectMenu();
+        final int menuCount = inputMenuCount();
         OrderRepository.order(table, menu, menuCount);
     }
 
-    private static void pay() {
-
+    private void pay() {
+        final Table table = selectTable();
+        showOrders(table);
+        PaymentOption paymentOption = selectPaymentOption();
+        int totalAmount = OrderRepository.getResult(table, paymentOption);
+        OutputView.printTotalAmount(totalAmount);
     }
 
-    private static void quit() {}
+    private void quit() {}
 
-    private static int selectTable() {
+    private Table selectTable() {
         final List<Table> tables = TableRepository.tables();
         OutputView.printTables(tables);
-        return InputView.inputTableNumber();
+        final int tableNumber = InputView.inputTableNumber();
+        return TableRepository.findByNumber(tableNumber);
     }
 
-    private static int selectMenu() {
+    private Menu selectMenu() {
         final List<Menu> menus = MenuRepository.menus();
         OutputView.printMenus(menus);
-        return InputView.inputMenuNumber();
+        final int menuNumber = InputView.inputMenuNumber();
+        return MenuRepository.findByNumber(menuNumber);
     }
 
-    private static int inputMenuCount() {
+    private int inputMenuCount() {
         return InputView.inputMenuCount();
+    }
+
+    private void showOrders(Table table) {
+        final List<String> orders = OrderRepository.getOrderMenus(table);
+        OutputView.printOrders(orders);
+    }
+
+    private PaymentOption selectPaymentOption() {
+        try {
+            final int command = InputView.inputPaymentOption();
+            return PaymentOption.from(command);
+        } catch (IllegalArgumentException exception) {
+            OutputView.printErrorMessage(exception.getMessage());
+            return selectPaymentOption();
+        }
     }
 }

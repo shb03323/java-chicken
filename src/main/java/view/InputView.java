@@ -30,6 +30,12 @@ public class InputView {
         return inputNumber();
     }
 
+    public static int inputPaymentOption() {
+        System.out.println("## 1번 테이블의 결제를 진행합니다.\n"
+                + "## 신용 카드는 1번, 현금은 2번");
+        return inputNumber();
+    }
+
     private static int inputNumber() {
         String input = scanner.next();
         validateIsNumber(input);
