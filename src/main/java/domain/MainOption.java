@@ -2,7 +2,7 @@ package domain;
 
 import java.util.Arrays;
 
-import static view.ErrorPrefix.ERROR_PREFIX;
+import static constant.SystemConstant.ERROR_PREFIX;
 
 public enum MainOption {
 

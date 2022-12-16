@@ -38,17 +38,13 @@ public class MainMenuController {
     }
 
     private void progress(MainOption selection) {
-        runOptions.get(selection).run();
-    }
+        try {
+            runOptions.get(selection).run();
+        } catch (IllegalArgumentException exception) {
+            OutputView.printErrorMessage(exception.getMessage());
+            progress(selection);
+        }
 
-    public void ifasfds() {
-        final List<Table> tables = TableRepository.tables();
-        OutputView.printTables(tables);
-
-        final int tableNumber = InputView.inputTableNumber();
-
-        final List<Menu> menus = MenuRepository.menus();
-        OutputView.printMenus(menus);
     }
 
     private void initControllers() {
@@ -58,7 +54,12 @@ public class MainMenuController {
     }
 
     private static void order() {
-
+        int tableNumber = selectTable();
+        Table table = TableRepository.findByNumber(tableNumber);
+        int menuNumber = selectMenu();
+        Menu menu = MenuRepository.findByNumber(menuNumber);
+        int menuCount = inputMenuCount();
+        OrderRepository.order(table, menu, menuCount);
     }
 
     private static void pay() {
@@ -66,4 +67,20 @@ public class MainMenuController {
     }
 
     private static void quit() {}
+
+    private static int selectTable() {
+        final List<Table> tables = TableRepository.tables();
+        OutputView.printTables(tables);
+        return InputView.inputTableNumber();
+    }
+
+    private static int selectMenu() {
+        final List<Menu> menus = MenuRepository.menus();
+        OutputView.printMenus(menus);
+        return InputView.inputMenuNumber();
+    }
+
+    private static int inputMenuCount() {
+        return InputView.inputMenuCount();
+    }
 }

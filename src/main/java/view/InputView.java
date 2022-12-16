@@ -2,7 +2,7 @@ package view;
 
 import java.util.Scanner;
 
-import static view.ErrorPrefix.ERROR_PREFIX;
+import static constant.SystemConstant.ERROR_PREFIX;
 
 public class InputView {
     private static final Scanner scanner = new Scanner(System.in);
@@ -17,6 +17,20 @@ public class InputView {
 
     public static int inputTableNumber() {
         System.out.println("## 테이블을 선택하세요.");
+        return inputNumber();
+    }
+
+    public static int inputMenuNumber() {
+        System.out.println("## 등록할 메뉴를 선택하세요.");
+        return inputNumber();
+    }
+
+    public static int inputMenuCount() {
+        System.out.println("## 메뉴의 수량을 입력하세요.");
+        return inputNumber();
+    }
+
+    private static int inputNumber() {
         String input = scanner.next();
         validateIsNumber(input);
         System.out.println();

@@ -12,7 +12,7 @@ public class OutputView {
     private static final String BOTTOM_LINE = "└ ─ ┘";
 
     public static void printErrorMessage(String message) {
-        System.out.println(message);
+        System.out.println(message + "\n");
     }
 
     public static void printMainMenu() {
